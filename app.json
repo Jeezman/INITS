@@ -1,0 +1,24 @@
+{
+  "expo": {
+    "name": "INITS-BD",
+    "slug": "INITS-BD",
+    "privacy": "public",
+    "sdkVersion": "36.0.0",
+    "platforms": ["ios", "android", "web"],
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "myapp",
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "backgroundColor": "#7FB78C",
+      "resizeMode": "cover"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true
+    }
+  }
+}

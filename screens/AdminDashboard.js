@@ -209,7 +209,7 @@ const Header = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 56px;
+  margin-bottom: 26px;
 `;
 
 const HeaderTitle = styled.Text`

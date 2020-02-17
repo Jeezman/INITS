@@ -38,6 +38,7 @@ export default function LandingScreen(props) {
         <LoginModal
           closeLoginModal={closeLoginModal}
           isLoginModalOpen={showLoginModal}
+          navigation={props.navigation}
         />
       </ImageBackground>
     </SafeAreaView>

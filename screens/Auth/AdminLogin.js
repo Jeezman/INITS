@@ -4,10 +4,17 @@ import { ActivityIndicator, View } from 'react-native';
 import styled from 'styled-components';
 import FormModal from '../../components/FormModal';
 
+//  admin@email.com && password -@Password123
+
+const admin = {
+  email: 'admin@email.com',
+  password: '@Password123'
+};
+
 export const LoginModal = ({
-  handleEmailSignIn,
   isLoginModalOpen,
-  closeLoginModal
+  closeLoginModal,
+  navigation
 }) => {
   const [hidden, showModal] = useState();
   const [email, setEmail] = useState('');
@@ -18,6 +25,14 @@ export const LoginModal = ({
     setMounted(true);
     showModal(false);
   }, [hidden, mounted, email, password, showModal]);
+
+  const handleAdminLogin = () => {
+    if (email === admin.email && password === admin.password) {
+      navigation.navigate('Dashboard');
+    } else {
+      alert('Login unsuccessful! ');
+    }
+  };
 
   const renderFormContent = () => {
     return (
@@ -36,7 +51,7 @@ export const LoginModal = ({
         />
         <View height={30} />
 
-        <Button onPress={() => handleEmailSignIn({ email, password })}>
+        <Button onPress={() => handleAdminLogin()}>
           <ButtonText>Login</ButtonText>
           <Ionicons
             style={{ color: '#fff', position: 'absolute', right: 24 }}

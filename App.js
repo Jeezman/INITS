@@ -7,6 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import LandingScreen from './screens/LandingScreen';
+import AdminDashboard from './screens/AdminDashboard';
 
 const Stack = createStackNavigator();
 
@@ -47,6 +48,20 @@ export default function App(props) {
               component={LandingScreen}
               options={{
                 title: 'Landing ',
+                headerStyle: {
+                  backgroundColor: '#f4511e'
+                },
+                headerTintColor: '#fff',
+                headerTitleStyle: {
+                  fontWeight: 'bold'
+                }
+              }}
+            />
+            <Stack.Screen
+              name="Dashboard"
+              component={AdminDashboard}
+              options={{
+                title: 'My home',
                 headerStyle: {
                   backgroundColor: '#f4511e'
                 },

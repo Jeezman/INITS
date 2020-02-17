@@ -1,86 +1,28 @@
 import * as React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
-import { SplashScreen } from 'expo';
-import * as Font from 'expo-font';
-import { Ionicons } from '@expo/vector-icons';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import {
+  Platform,
+  StatusBar,
+  StyleSheet,
+  View,
+  AsyncStorage
+} from 'react-native';
+import logger from 'redux-logger';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import reducer from './store';
+import Main from './index';
 
-import LandingScreen from './screens/LandingScreen';
-import AdminDashboard from './screens/AdminDashboard';
+const store = configureStore({
+  reducer: reducer,
+  middleware: [logger]
+});
 
-const Stack = createStackNavigator();
-
-export default function App(props) {
-  const [isLoadingComplete, setLoadingComplete] = React.useState(false);
-  const containerRef = React.useRef();
-
-  React.useEffect(() => {
-    async function loadResourcesAndDataAsync() {
-      try {
-        SplashScreen.preventAutoHide();
-
-        await Font.loadAsync({
-          ...Ionicons.font,
-          'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf')
-        });
-      } catch (e) {
-        console.warn(e);
-      } finally {
-        setLoadingComplete(true);
-        SplashScreen.hide();
-      }
-    }
-
-    loadResourcesAndDataAsync();
-  }, []);
-
-  if (!isLoadingComplete && !props.skipLoadingScreen) {
-    return null;
-  } else {
+export default class App extends React.Component {
+  render() {
     return (
-      <View style={styles.container}>
-        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-        <NavigationContainer ref={containerRef}>
-          <Stack.Navigator>
-            <Stack.Screen
-              name="Landing"
-              component={LandingScreen}
-              options={{
-                title: 'Landing ',
-                headerStyle: {
-                  backgroundColor: '#f4511e'
-                },
-                headerTintColor: '#fff',
-                headerTitleStyle: {
-                  fontWeight: 'bold'
-                }
-              }}
-            />
-            <Stack.Screen
-              name="Dashboard"
-              component={AdminDashboard}
-              options={{
-                title: 'My home',
-                headerStyle: {
-                  backgroundColor: '#f4511e'
-                },
-                headerTintColor: '#fff',
-                headerTitleStyle: {
-                  fontWeight: 'bold'
-                }
-              }}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </View>
+      <Provider store={store}>
+        <Main />
+      </Provider>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff'
-  }
-});

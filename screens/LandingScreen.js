@@ -29,9 +29,9 @@ export default function LandingScreen(props) {
             <ButtonStyle onPress={() => setShowLoginModal(true)}>
               <ButtonText>Admin</ButtonText>
             </ButtonStyle>
-            <ButtonText onPress={() => props.navigation.navigate('Dashboard')}>
+            <ButtonStyle onPress={() => props.navigation.navigate('Dashboard')}>
               <ButtonText>User</ButtonText>
-            </ButtonText>
+            </ButtonStyle>
           </ButtonWrapStyle>
         </View>
 

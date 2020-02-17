@@ -1,8 +1,13 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, ImageBackground, View } from 'react-native';
 import styled from 'styled-components/native';
+import { LoginModal } from './Auth/AdminLogin';
 
 export default function LandingScreen(props) {
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+  const closeLoginModal = () => setShowLoginModal(false);
+
   props.navigation.setOptions({
     header: () => null
   });
@@ -12,16 +17,19 @@ export default function LandingScreen(props) {
         source={require('../assets/images/splash.png')}
         style={styles.imgbg}
       >
-        <View style={{ marginBottom: 30 }}>
-          <ButtonWrapStyle>
-            <ButtonStyle>
-              <ButtonText>Admin</ButtonText>
-            </ButtonStyle>
-            <ButtonStyle>
-              <ButtonText>User</ButtonText>
-            </ButtonStyle>
-          </ButtonWrapStyle>
-        </View>
+        <ButtonWrapStyle>
+          <ButtonStyle onPress={() => setShowLoginModal(true)}>
+            <ButtonText>Admin</ButtonText>
+          </ButtonStyle>
+          <ButtonStyle>
+            <ButtonText>User</ButtonText>
+          </ButtonStyle>
+        </ButtonWrapStyle>
+
+        <LoginModal
+          closeLoginModal={closeLoginModal}
+          isLoginModalOpen={showLoginModal}
+        />
       </ImageBackground>
     </View>
   );
@@ -49,6 +57,8 @@ const ButtonWrapStyle = styled.View`
   flex-direction: row;
   justify-content: space-between;
   padding: 0 10px;
+  position: absolute;
+  bottom: 5%;
 `;
 
 const styles = StyleSheet.create({
@@ -59,6 +69,7 @@ const styles = StyleSheet.create({
   imgbg: {
     width: '100%',
     height: '100%',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-start'
+    // alignItems: 'flex-end'
   }
 });

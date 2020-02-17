@@ -8,6 +8,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import LandingScreen from './screens/LandingScreen';
 import AdminDashboard from './screens/AdminDashboard';
+import HomeScreen from './screens/HomeScreen';
 
 const Stack = createStackNavigator();
 
@@ -64,6 +65,20 @@ export default function App(props) {
                 title: 'My home',
                 headerStyle: {
                   backgroundColor: '#f4511e'
+                },
+                headerTintColor: '#fff',
+                headerTitleStyle: {
+                  fontWeight: 'bold'
+                }
+              }}
+            />
+            <Stack.Screen
+              name="Listings"
+              component={HomeScreen}
+              options={{
+                title: 'Business Listings',
+                headerStyle: {
+                  backgroundColor: '#7FB78C'
                 },
                 headerTintColor: '#fff',
                 headerTitleStyle: {

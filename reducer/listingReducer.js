@@ -6,6 +6,7 @@ const DELETE_LISTING = 'DELETE_LISTING';
 const INITIAL_STATE = {
   listing: [
     {
+      id: 1,
       name: 'Kelwarams Plc',
       desc: 'Alba Plastic Surgery and med spa',
       phone: '08069561146',
@@ -16,6 +17,7 @@ const INITIAL_STATE = {
       category: 'Approved'
     },
     {
+      id: 2,
       name: 'Johnson and Johnson',
       desc: 'Cosmetic agency',
       phone: '08069561146',

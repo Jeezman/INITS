@@ -31,6 +31,7 @@ export default function AdminDashboard(props) {
   const [modalVisible, setModalVisible] = useState(false);
   const [data, setData] = useState([
     {
+      id: 1,
       name: 'Kelwarams Plc',
       desc: 'Alba Plastic Surgery and med spa',
       phone: '08069561146',
@@ -41,6 +42,7 @@ export default function AdminDashboard(props) {
       category: 'Approved'
     },
     {
+      id: 2,
       name: 'Johnson and Johnson',
       desc: 'Cosmetic agency',
       phone: '08069561146',
@@ -70,6 +72,11 @@ export default function AdminDashboard(props) {
       })
     );
     setModalVisible(!modalVisible);
+  };
+
+  const handleDeleteListing = id => {
+    setData(data.filter((listing, index) => listing.id !== id));
+    // alert(`id is ${id}`);
   };
 
   props.navigation.setOptions({
@@ -105,6 +112,8 @@ export default function AdminDashboard(props) {
             <Divider />
             {data.map((listing, index) => (
               <ListCard
+                isDelete={handleDeleteListing}
+                id={listing.id}
                 key={index}
                 name={listing.name}
                 desc={listing.desc}

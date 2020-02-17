@@ -52,12 +52,13 @@ class ListCard extends React.Component {
       outputRange: [1, 0],
       extrapolate: 'clamp'
     });
+    let { id } = this.props;
     return (
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => this.props.isDelete(id)}>
         <View
           style={{
             backgroundColor: '#FEECEC',
-            height: 55,
+            height: 61,
             justifyContent: 'center',
             alignItems: 'flex-end',
             paddingHorizontal: 20
@@ -66,7 +67,7 @@ class ListCard extends React.Component {
           <Animated.Text
             style={[{ color: '#EB5757' }, { transform: [{ scale }] }]}
           >
-            Cancel
+            Delete
           </Animated.Text>
         </View>
       </TouchableOpacity>
@@ -83,11 +84,12 @@ class ListCard extends React.Component {
       desc,
       category,
       showMore,
-      style
+      style,
+      isDelete
     } = this.props;
     let { bounceValue, istoggled } = this.state;
     return (
-      <Swipeable renderRightActions={this.RightActions}>
+      <Swipeable renderRightActions={isDelete ? this.RightActions : null}>
         <Animated.View
           style={[
             {

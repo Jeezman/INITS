@@ -163,7 +163,7 @@ const Header = styled.View`
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
   padding-top: 10px;
-  padding-bottom: ${({ withoutPadding }) => (withoutPadding ? 0 : 32)};
+  padding-bottom: ${({ withoutPadding }) => (withoutPadding ? 0 : 32)}px;
   align-items: center;
   margin-bottom: -1px;
 `;

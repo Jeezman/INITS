@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { StyleSheet, ImageBackground, View } from 'react-native';
+import {
+  StyleSheet,
+  ImageBackground,
+  View,
+  SafeAreaView,
+  StatusBar
+} from 'react-native';
 import styled from 'styled-components/native';
 import { LoginModal } from './Auth/AdminLogin';
 
@@ -12,26 +18,29 @@ export default function LandingScreen(props) {
     header: () => null
   });
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor="#7FB78C" barStyle="dark-content" />
       <ImageBackground
         source={require('../assets/images/splash.png')}
         style={styles.imgbg}
       >
-        <ButtonWrapStyle>
-          <ButtonStyle onPress={() => setShowLoginModal(true)}>
-            <ButtonText>Admin</ButtonText>
-          </ButtonStyle>
-          <ButtonStyle>
-            <ButtonText>User</ButtonText>
-          </ButtonStyle>
-        </ButtonWrapStyle>
+        <View style={{ flex: 100, justifyContent: 'flex-end' }}>
+          <ButtonWrapStyle>
+            <ButtonStyle onPress={() => setShowLoginModal(true)}>
+              <ButtonText>Admin</ButtonText>
+            </ButtonStyle>
+            <ButtonText onPress={() => props.navigation.navigate('Dashboard')}>
+              <ButtonText>User</ButtonText>
+            </ButtonText>
+          </ButtonWrapStyle>
+        </View>
 
         <LoginModal
           closeLoginModal={closeLoginModal}
           isLoginModalOpen={showLoginModal}
         />
       </ImageBackground>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -57,8 +66,6 @@ const ButtonWrapStyle = styled.View`
   flex-direction: row;
   justify-content: space-between;
   padding: 0 10px;
-  position: absolute;
-  bottom: 5%;
 `;
 
 const styles = StyleSheet.create({
@@ -68,8 +75,6 @@ const styles = StyleSheet.create({
   },
   imgbg: {
     width: '100%',
-    height: '100%',
-    justifyContent: 'flex-start'
-    // alignItems: 'flex-end'
+    flex: 1
   }
 });

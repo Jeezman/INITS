@@ -21,7 +21,7 @@ export const LoginModal = ({
 
   const renderFormContent = () => {
     return (
-      <View>
+      <View style={{ zIndex: 2 }}>
         <InputBox
           type="emailAddress"
           secure={false}

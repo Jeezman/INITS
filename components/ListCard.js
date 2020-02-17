@@ -7,7 +7,7 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 class ListCard extends React.Component {
   state = {
-    bounceValue: new Animated.Value(60),
+    bounceValue: new Animated.Value(65),
     showAppointment: true,
     istoggled: false
   };
@@ -25,6 +25,7 @@ class ListCard extends React.Component {
     });
 
     this.state.bounceValue.setValue(initialValue);
+
     Animated.spring(this.state.bounceValue, {
       toValue: finalValue,
       velocity: 3,
@@ -44,7 +45,7 @@ class ListCard extends React.Component {
     });
   };
 
-  RightActions = (progress, dragX) => {
+  RightActions = dragX => {
     let { istoggled } = this.state;
     if (istoggled) return null;
     const scale = dragX.interpolate({
@@ -58,7 +59,7 @@ class ListCard extends React.Component {
         <View
           style={{
             backgroundColor: '#FEECEC',
-            height: 61,
+            height: 65,
             justifyContent: 'center',
             alignItems: 'flex-end',
             paddingHorizontal: 20
@@ -69,6 +70,26 @@ class ListCard extends React.Component {
           >
             Delete
           </Animated.Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+  LeftActions = () => {
+    let { istoggled } = this.state;
+    if (istoggled) return null;
+    let { id } = this.props;
+    return (
+      <TouchableOpacity onPress={() => this.props.edit(id)}>
+        <View
+          style={{
+            backgroundColor: '#7FB78C',
+            height: 65,
+            justifyContent: 'center',
+            alignItems: 'flex-end',
+            paddingHorizontal: 20
+          }}
+        >
+          <Animated.Text style={[{ color: '#fff' }]}>Edit</Animated.Text>
         </View>
       </TouchableOpacity>
     );
@@ -89,7 +110,10 @@ class ListCard extends React.Component {
     } = this.props;
     let { bounceValue, istoggled } = this.state;
     return (
-      <Swipeable renderRightActions={isDelete ? this.RightActions : null}>
+      <Swipeable
+        renderLeftActions={isDelete ? this.LeftActions : null}
+        renderRightActions={isDelete ? this.RightActions : null}
+      >
         <Animated.View
           style={[
             {
@@ -123,7 +147,7 @@ class ListCard extends React.Component {
             </View>
           </ListCardHeader>
           {showMore && (
-            <View style={{ height: 100 }} onLayout={this._setMaxHeight}>
+            <View style={{ height: 130 }} onLayout={this._setMaxHeight}>
               <DetailCard
                 email={email}
                 phone={phone}

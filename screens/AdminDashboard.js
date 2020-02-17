@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Platform,
   Text,
@@ -10,63 +10,69 @@ import {
 } from 'react-native';
 import styled from 'styled-components/native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useSelector, useDispatch } from 'react-redux';
 import SelectBtn from '../components/SelectButton';
 import ListCard from '../components/ListCard';
 import { ButtonStyle, ButtonText } from './style';
+import {
+  addListing,
+  deleteListing,
+  updateListing
+} from '../reducer/listingReducer';
+const uuidv4 = require('uuid/v4');
 
 const image = 'https://randomuser.me/api/portraits/women/16.jpg';
 
-/**
- * 
-- Name
-- Description
-- Phone Number
-- Email
-- Website Url
-- Categories (one or more eg web, mobile, health, etc)
-- Images (one or more images, https://placeimg.com/160/160/any)
- */
-
 export default function AdminDashboard(props) {
+  const dispatch = useDispatch();
+  const { listing } = useSelector(state => state.listing);
   const [modalVisible, setModalVisible] = useState(false);
-  const [data, setData] = useState([
-    {
-      id: 1,
-      name: 'Kelwarams Plc',
-      desc: 'Alba Plastic Surgery and med spa',
-      phone: '08069561146',
-      email: 'kew@kw.ng',
-      website: 'kw.com.ng',
-      image:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRmpEPzi5pBBJ3RK5pP7x4hgAepzADMLHXcUFcrb3_HH_DriUhf',
-      category: 'Approved'
-    },
-    {
-      id: 2,
-      name: 'Johnson and Johnson',
-      desc: 'Cosmetic agency',
-      phone: '08069561146',
-      email: 'kew@jnj.ng',
-      website: 'kw.com.ng',
-      image:
-        'https://pbs.twimg.com/profile_images/1101560913885315074/9KHsZD7M_400x400.png',
-      category: 'Approved'
-    }
-  ]);
+  const [id, setID] = useState({});
   const [businessName, setBusinessName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [website, setWebsite] = useState('');
   const [image, setImage] = useState('');
+  const [category, setCategory] = useState([]);
   const [description, setDescription] = useState('');
+  const [isEdit, setEdit] = useState(false);
+
+  useEffect(() => {
+    setID('');
+    setBusinessName('');
+    setPhone('');
+    setEmail('');
+    setWebsite('');
+    setImage('');
+    setCategory('');
+    setDescription('');
+  }, [listing]);
 
   const handleAddListing = () => {
-    setData(
-      data.concat({
+    dispatch(
+      addListing({
+        id: uuidv4(),
         name: businessName,
         phone,
         email,
         website,
+        category: category.split(','),
+        desc: description,
+        image
+      })
+    );
+    setModalVisible(!modalVisible);
+  };
+
+  const handleUpdateListing = () => {
+    dispatch(
+      updateListing({
+        id: id,
+        name: businessName,
+        phone,
+        email,
+        website,
+        category: category.split(','),
         desc: description,
         image
       })
@@ -75,8 +81,28 @@ export default function AdminDashboard(props) {
   };
 
   const handleDeleteListing = id => {
-    setData(data.filter((listing, index) => listing.id !== id));
-    // alert(`id is ${id}`);
+    dispatch(deleteListing(id));
+  };
+
+  const handleEditListing = id => {
+    setEdit(true);
+    let _listing = listing;
+    let filteredListing = _listing.filter((value, index) => value.id === id);
+    let newListing = filteredListing[0];
+    setID(newListing.id);
+    setBusinessName(newListing.name);
+    setPhone(newListing.phone);
+    setEmail(newListing.email);
+    setWebsite(newListing.website);
+    setImage(newListing.image);
+    setCategory(newListing.category.join(','));
+    setDescription(newListing.desc);
+
+    setModalVisible(!modalVisible);
+  };
+
+  const handleSetCategory = value => {
+    setCategory(value);
   };
 
   props.navigation.setOptions({
@@ -89,7 +115,11 @@ export default function AdminDashboard(props) {
         <Header>
           <HeaderTitle>Hello, Admin</HeaderTitle>
           <HeaderImageCover>
-            <HeaderImage source={{ uri: image }} />
+            <HeaderImage
+              source={{
+                uri: 'https://randomuser.me/api/portraits/women/16.jpg'
+              }}
+            />
           </HeaderImageCover>
         </Header>
         <ScrollView
@@ -103,28 +133,44 @@ export default function AdminDashboard(props) {
               value="Name, Desc, Email, Phone"
               emoji="📇"
               onPress={() => {
+                setEdit(false);
                 setModalVisible(true);
+                setID('');
+                setBusinessName('');
+                setPhone('');
+                setEmail('');
+                setWebsite('');
+                setImage('');
+                setCategory('');
+                setDescription('');
               }}
             />
           </View>
           <Section>
             <SectionTitle>Business Listings</SectionTitle>
             <Divider />
-            {data.map((listing, index) => (
-              <ListCard
-                isDelete={handleDeleteListing}
-                id={listing.id}
-                key={index}
-                name={listing.name}
-                desc={listing.desc}
-                phone={listing.phone}
-                email={listing.email}
-                website={listing.website}
-                image={listing.image}
-                category={listing.category}
-                showMore={true}
-              />
-            ))}
+            {listing.length > 0 ? (
+              listing.map((listing, index) => (
+                <ListCard
+                  isDelete={handleDeleteListing}
+                  edit={handleEditListing}
+                  id={listing.id}
+                  key={index}
+                  name={listing.name}
+                  desc={listing.desc}
+                  phone={listing.phone}
+                  email={listing.email}
+                  website={listing.website}
+                  image={listing.image}
+                  category={listing.category}
+                  showMore={true}
+                />
+              ))
+            ) : (
+              <Text style={{ fontSize: 24, textAlign: 'center' }}>
+                No listing - Please click above to add listing
+              </Text>
+            )}
           </Section>
         </ScrollView>
       </Container>
@@ -167,6 +213,11 @@ export default function AdminDashboard(props) {
               value={image}
             />
             <TextInputStyle
+              onChangeText={text => handleSetCategory(text)}
+              placeholder="Category (separate with comma)"
+              value={category}
+            />
+            <TextInputStyle
               multiline={true}
               numberOfLines={6}
               onChangeText={text => setDescription(text)}
@@ -175,19 +226,15 @@ export default function AdminDashboard(props) {
             />
 
             <ButtonStyle
-              onPress={() => handleAddListing()}
+              onPress={() =>
+                isEdit ? handleUpdateListing() : handleAddListing()
+              }
               style={{ width: '100%', marginTop: 20 }}
             >
-              <ButtonText>Save Listing</ButtonText>
+              <ButtonText>
+                {isEdit ? 'Update Listing' : 'Save Listing'}
+              </ButtonText>
             </ButtonStyle>
-            {/* 
-            <TouchableHighlight
-              onPress={() => {
-                setModalVisible(!modalVisible);
-              }}
-            >
-              <Text>Hide Modal</Text>
-            </TouchableHighlight> */}
           </View>
         </View>
       </Modal>

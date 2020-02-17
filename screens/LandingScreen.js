@@ -14,6 +14,10 @@ export default function LandingScreen(props) {
 
   const closeLoginModal = () => setShowLoginModal(false);
 
+  const handleNavigation = () => {
+    props.navigation.navigate('Listings');
+  };
+
   props.navigation.setOptions({
     header: () => null
   });
@@ -29,7 +33,7 @@ export default function LandingScreen(props) {
             <ButtonStyle onPress={() => setShowLoginModal(true)}>
               <ButtonText>Admin</ButtonText>
             </ButtonStyle>
-            <ButtonStyle onPress={() => props.navigation.navigate('Listings')}>
+            <ButtonStyle onPress={() => handleNavigation()}>
               <ButtonText>User</ButtonText>
             </ButtonStyle>
           </ButtonWrapStyle>

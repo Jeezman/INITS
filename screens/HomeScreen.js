@@ -1,21 +1,11 @@
 import * as React from 'react';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  SafeAreaView
-} from 'react-native';
+import { SafeAreaView } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
-import * as WebBrowser from 'expo-web-browser';
 import ListCard from '../components/ListCard';
 
 export default function HomeScreen(props) {
   const { listing } = useSelector(state => state.listing);
-
-  console.log('listing is ', listing);
 
   return (
     <SafeAreaView style={{ backgroundColor: '#F1F3FA', marginTop: 24 }}>

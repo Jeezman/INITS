@@ -3,52 +3,57 @@ import styled from 'styled-components';
 import { View } from 'react-native';
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 
-const DetailCard = ({ status, email, desc, phone, website, category }) => (
-  <DetailCardStyle status={status}>
-    <DetailCardHeaderWrap status={status}></DetailCardHeaderWrap>
-    <DetailCardBody>
-      <DetailItemWrap>
-        <DetailItem>
-          <DetailIcon style={{ elevation: 2 }}>
-            <Feather style={{ color: '#8c8c8c' }} name="phone" size={14} />
-          </DetailIcon>
-          <DetailCardBodyText>{phone}</DetailCardBodyText>
-        </DetailItem>
-        <DetailItem>
-          <DetailIcon style={{ elevation: 2 }}>
-            <MaterialCommunityIcons
-              style={{ color: '#8c8c8c' }}
-              name="email"
-              size={14}
-            />
-          </DetailIcon>
-          <DetailCardBodyText>{email}</DetailCardBodyText>
-        </DetailItem>
-        <DetailItem>
-          <DetailIcon style={{ elevation: 2 }}>
-            <MaterialCommunityIcons
-              style={{ color: '#8c8c8c' }}
-              name="web"
-              size={14}
-            />
-          </DetailIcon>
-          <DetailCardBodyText>{website}</DetailCardBodyText>
-        </DetailItem>
-      </DetailItemWrap>
-      <DetailCardBodyHeader>Categories</DetailCardBodyHeader>
-      {category && (
-        <View style={{ flexDirection: 'row' }}>
-          <ListCardcategory style={{ elevation: 1 }} category={category}>
-            {category}
-          </ListCardcategory>
-          <ListCardcategory style={{ elevation: 1 }} category={category}>
-            {category}
-          </ListCardcategory>
-        </View>
-      )}
-    </DetailCardBody>
-  </DetailCardStyle>
-);
+const DetailCard = ({ status, email, desc, phone, website, category }) => {
+  return (
+    <DetailCardStyle status={status}>
+      <DetailCardHeaderWrap status={status}></DetailCardHeaderWrap>
+      <DetailCardBody>
+        <DetailItemWrap>
+          <DetailItem>
+            <DetailIcon style={{ elevation: 2 }}>
+              <Feather style={{ color: '#8c8c8c' }} name="phone" size={14} />
+            </DetailIcon>
+            <DetailCardBodyText>{phone}</DetailCardBodyText>
+          </DetailItem>
+          <DetailItem>
+            <DetailIcon style={{ elevation: 2 }}>
+              <MaterialCommunityIcons
+                style={{ color: '#8c8c8c' }}
+                name="email"
+                size={14}
+              />
+            </DetailIcon>
+            <DetailCardBodyText>{email}</DetailCardBodyText>
+          </DetailItem>
+          <DetailItem>
+            <DetailIcon style={{ elevation: 2 }}>
+              <MaterialCommunityIcons
+                style={{ color: '#8c8c8c' }}
+                name="web"
+                size={14}
+              />
+            </DetailIcon>
+            <DetailCardBodyText>{website}</DetailCardBodyText>
+          </DetailItem>
+        </DetailItemWrap>
+        <DetailCardBodyHeader>Categories</DetailCardBodyHeader>
+        {category && (
+          <View style={{ flexDirection: 'row' }}>
+            {category.map((value, index) => (
+              <ListCardcategory
+                key={index}
+                style={{ elevation: 1 }}
+                category={category}
+              >
+                {value}
+              </ListCardcategory>
+            ))}
+          </View>
+        )}
+      </DetailCardBody>
+    </DetailCardStyle>
+  );
+};
 
 const DetailCardStyle = styled.View`
   border-radius: 12px;

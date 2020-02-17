@@ -19,16 +19,18 @@ export const LoginModal = ({
   const [hidden, showModal] = useState();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [mounted, setMounted] = useState();
 
   useEffect(() => {
-    setMounted(true);
     showModal(false);
-  }, [hidden, mounted, email, password, showModal]);
+    setEmail('');
+    setPassword('');
+  }, [hidden, showModal]);
 
   const handleAdminLogin = () => {
     if (email === admin.email && password === admin.password) {
       navigation.navigate('Dashboard');
+      showModal(true);
+      closeLoginModal();
     } else {
       alert('Login unsuccessful! ');
     }

@@ -3,6 +3,8 @@ import { createAction } from '@reduxjs/toolkit';
 const ADD_LISTING = 'ADD_LISTING';
 const DELETE_LISTING = 'DELETE_LISTING';
 const UPDATE_LISTING = 'UPDATE_LISTING';
+const SEARCH_LISTING = 'SEARCH_LISTING';
+const CLEAR_SEARCH_LISTING = 'CLEAR_SEARCH_LISTING';
 
 const INITIAL_STATE = {
   listing: [
@@ -28,12 +30,16 @@ const INITIAL_STATE = {
         'https://pbs.twimg.com/profile_images/1101560913885315074/9KHsZD7M_400x400.png',
       category: ['Finance', 'Pharma']
     }
-  ]
+  ],
+  isSearching: false,
+  searchedListing: []
 };
 
 export const addListing = createAction(ADD_LISTING);
 export const deleteListing = createAction(DELETE_LISTING);
 export const updateListing = createAction(UPDATE_LISTING);
+export const searchListing = createAction(SEARCH_LISTING);
+export const clearSearchListing = createAction(CLEAR_SEARCH_LISTING);
 
 export default (state = INITIAL_STATE, action) => {
   if (action.type === ADD_LISTING) {
@@ -63,6 +69,29 @@ export default (state = INITIAL_STATE, action) => {
       listing: state.listing.filter(
         (listing, index) => listing.id !== action.payload
       )
+    };
+  }
+
+  if (action.type === SEARCH_LISTING) {
+    let searchTerm = action.payload;
+    let listing = state.listing;
+    let updatedListing = listing.filter(
+      value =>
+        value.name.toLowerCase().search(searchTerm.toLowerCase()) !== -1 ||
+        value.desc.toLowerCase().search(searchTerm.toLowerCase()) !== -1
+    );
+    return {
+      ...state,
+      isSearching: true,
+      searchedListing: updatedListing
+    };
+  }
+
+  if (action.type === CLEAR_SEARCH_LISTING) {
+    return {
+      ...state,
+      isSearching: false,
+      searchedListing: []
     };
   }
   return state;
